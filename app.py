@@ -638,9 +638,9 @@ def chat(f_number):
     chats = database[u]['friends'][f]
     return render_template_string(html, chats=chats, f_number=f, u_number=u)
 
-@app.route("/alive/<api_key>")
-def Alive(key):
-    return f"{key} : Website Stopped from shutting down"
+@app.route("/alive")
+def Alive():
+    return f" Website Stopped from shutting down"
 # For chatting 
 @sio.on("join_room")
 def handle_join(data):
