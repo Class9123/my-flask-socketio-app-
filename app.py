@@ -5,6 +5,7 @@ html1="""
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="sKP4alsXsHG6lsdaSyAEvSi1PgLGpTITHkd6UvzOyJU" />
   <title>WhatsApp Friends</title>
   <style>
     body {
@@ -278,6 +279,7 @@ html="""
   <meta charset="UTF-8">
   <title>Class 10 Facebook</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="sKP4alsXsHG6lsdaSyAEvSi1PgLGpTITHkd6UvzOyJU" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <style>
