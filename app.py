@@ -277,10 +277,14 @@ html1="""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Baloo+Bhai+2:wght@400..800&display=swap" rel="stylesheet">
     <style>
         /* utilities start */
         body {
             overflow-x: hidden;
+	    font-family: "Baloo Bhai 2", sans-serif;
         }
 
         * {
@@ -546,6 +550,7 @@ html1="""
             z-index: 20;
         }
     </style>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
 </head>
 
@@ -746,7 +751,10 @@ html = """
     <title>Class 10 Facebook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="sKP4alsXsHG6lsdaSyAEvSi1PgLGpTITHkd6UvzOyJU" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Baloo+Bhai+2:wght@400..800&display=swap" rel="stylesheet">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <style>
 :root {
@@ -765,6 +773,7 @@ html = """
       display: flex;
       flex-direction: column;
       height: 100vh;
+      font-family: "Baloo Bhai 2", sans-serif;
     }
 
     .header {
