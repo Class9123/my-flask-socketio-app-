@@ -458,7 +458,7 @@ html="""
   <div class="header">
     <img class="friend-profile" src="">
     <label class="friend-name">Dev &times;</label>
-    your no. 98727267
+    {{ f_number }}
   </div>
   <div id="chat" class="chat">
     {% for j in chats %}
