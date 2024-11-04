@@ -857,7 +857,7 @@ html = """
       messageDiv.innerHTML = `
       <div class="message-content you">
       <div class="date">
-      D:${date_time.date} <br> &#9201; ${date_time.time}
+      ${date_time.date} <br>${date_time.time}
       </div>
       ${date_time.message}
       </div>
