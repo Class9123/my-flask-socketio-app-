@@ -270,6 +270,474 @@ html1="""
 </html>
 
 """
+html1="""
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* utilities start */
+        body {
+            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Ensures padding and borders are included in the width and height */
+        }
+
+        .icon {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            margin: 0;
+        }
+
+        .icon.dot {
+            width: 20px;
+            margin-top: 2px;
+        }
+
+        /* utilities end */
+        .chtscont {}
+
+        .allheads {
+            color: teal;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            font-weight: 700;
+            width: 100vw;
+            padding: 10px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 2rem;
+            background-color: #ffffff;
+        }
+
+        .chtsicons {
+            display: flex;
+            width: 70vw;
+            justify-content: flex-end;
+        }
+
+        main {
+            position: relative;
+            top: 55px;
+            overflow-y: auto;
+            /* Allow vertical scrolling */
+            height: calc(100vh - 80px);
+            /* Ensure it fills the viewport */
+        }
+
+        .activenav {
+            border-top: 3px solid #D8FD99;
+        }
+
+        .friend {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            position: relative;
+            /* Added position relative for proper alignment of time */
+        }
+
+        .frname {
+            font-weight: 500;
+            font-size: 17px;
+            margin-top: 10px;
+            display: flex;
+        }
+
+        .lastmsg {
+            margin-top: 4px;
+            margin-left: 3px;
+        }
+
+        .time {
+            position: absolute;
+            right: 10px;
+            /* Position the time on the right side */
+            top: 10px;
+            /* Adjust the vertical position */
+            font-weight: 500;
+            font-size: 13px;
+            color: #6A7074;
+        }
+
+        img.frprofile {
+            padding: 10px;
+            width: 70px;
+            /* Keep the profile image size unchanged */
+            height: 70px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .friends {
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 40vh;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .add-user-btn {
+            background-color: #25D366;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            font-size: 24px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .add-user-btn:hover {
+            background-color: #128C7E;
+        }
+
+        .user-form {
+            display: none;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: calc(100% - 60px);
+            position: absolute;
+            top: 50%;
+            animation: expandForm 0.5s ease;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            margin: 10px;
+        }
+
+        .user-form input {
+            width: calc(100% - 10px);
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            animation: placeholderAnim 1.5s infinite;
+        }
+
+        .user-form input:focus {
+            border-color: #25D366;
+            box-shadow: 0 0 5px #25D366;
+        }
+
+        .user-form input::placeholder {
+            color: #888;
+            transition: color 0.5s ease;
+        }
+
+        .user-form input:focus::placeholder {
+            color: transparent;
+        }
+
+        .user-form button {
+            background-color: #075e54;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-form button:hover {
+            background-color: #128C7E;
+        }
+
+        @keyframes expandForm {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes placeholderAnim {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        input {
+            outline: none;
+        }
+
+        #close {
+            color: black;
+            font-size: 16px;
+            position: relative;
+            left: 90%;
+            background-color: transparent;
+        }
+
+        .user-form button:hover {
+            background-color: #128C7E;
+        }
+
+        span {
+            letter-spacing: 6px;
+        }
+
+        .error {
+            margin-bottom: 15px;
+        }
+
+        .name {
+            position: fixed;
+            /* Fixed position to keep it at the bottom right */
+            bottom: 10px;
+            /* Space from the bottom */
+            right: 10px;
+            /* Space from the right */
+            font-size: 16px;
+            /* Adjust the font size */
+            color: #333;
+            /* Set the text color */
+            background-color: #ffffff;
+            /* Background color */
+            padding: 5px;
+            /* Padding around the text */
+            border-radius: 5px;
+            /* Rounded corners */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* Optional shadow for better visibility */
+            cursor: move;
+            /* Cursor indicates draggable */
+            width: 100px;
+            /* Fixed width */
+            height: 40px;
+            /* Fixed height */
+            display: flex;
+            /* Flexbox for centering text */
+            align-items: center;
+            /* Vertically center the text */
+            justify-content: center;
+            /* Horizontally center the text */
+            text-align: center;
+            /* Center the text */
+            z-index: 20;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+</head>
+
+<body>
+    <header class="allheads">
+        <div class="whtsname">
+            Talkup...
+        </div>
+    </header>
+
+    <main id="friendsList">
+        <div class="friends">
+            {% for d in data %}
+            <div class="friend" onclick="go_Tochat('{{ d }}')">
+                <img src="default.webp" class="frprofile" onclick="event.stopPropagation();">
+                <div class="frinfo">
+                    <div class="frname">
+                        {{d}}
+                        <div class="time">
+                            Date
+                        </div>
+                    </div>
+                    <div class="lastmsg">
+                        hi
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <button class="add-user-btn" onclick="showForm()">+</button>
+        <div class="user-form" id="userForm">
+            <button id="close" class="close-btn" onclick="closeForm()">&times;</button>
+            <div>
+                <input type="text" placeholder="Enter number" id="f_number" required>
+                <span id="error" class="error"></span><br><br>
+                <button onclick="add_friend()">Add</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="name" id="movableName">
+        9821783210
+    </div>
+
+    <script>
+        var u = "{{ u_number }}";
+        var socket = io();
+
+        function go_Tochat(d) {
+            window.location.href = `/chat/${d}`;
+        }
+
+        function add_friend() {
+            var data = {
+                u_number: u,
+                f_number: document.getElementById("f_number").value
+            };
+            socket.emit("add", data);
+            document.getElementById("f_number").value = "";
+            document.getElementById("error").textContent = "";
+        }
+
+        function showForm() {
+            var form = document.getElementById("userForm");
+            form.style.display = "block";
+            setTimeout(function() {
+                form.style.opacity = 1;
+            }, 100);
+        }
+
+        function closeForm() {
+            var form = document.getElementById("userForm");
+            form.style.opacity = 0; // Fade out the form
+            setTimeout(function() {
+                form.style.display = "none"; // Hide the form after fading out
+            }, 500);
+            document.getElementById("f_number").value = "";
+            document.getElementById("error").textContent = "";
+        }
+
+        socket.on("not_found", function(data) {
+            document.getElementById("error").textContent = data;
+        });
+
+        socket.on("redirect", function() {
+            window.location.reload();
+            window.location.href = "/";
+        });
+    </script>
+
+
+
+
+    <script>
+        const movableName = document.getElementById('movableName');
+        const friendsList = document.getElementById('friendsList');
+
+        let offsetX, offsetY;
+        let isDragging = false;
+
+        movableName.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - movableName.getBoundingClientRect().left;
+            offsetY = e.clientY - movableName.getBoundingClientRect().top;
+
+            // Prevent scrolling of the friends list while dragging
+            friendsList.style.overflow = 'hidden';
+
+            document.addEventListener('mousemove', moveName);
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            friendsList.style.overflow = 'auto'; // Allow scrolling again
+            document.removeEventListener('mousemove', moveName);
+        });
+
+        function moveName(e) {
+            if (isDragging) {
+                let newX = e.clientX - offsetX;
+                let newY = e.clientY - offsetY;
+
+                // Constrain the position within the viewport
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const nameWidth = movableName.offsetWidth;
+                const nameHeight = movableName.offsetHeight;
+
+                // Ensure the name div stays within the viewport
+                if (newX < 0) newX = 0;
+                if (newX + nameWidth > viewportWidth) newX = viewportWidth - nameWidth;
+                if (newY < 0) newY = 0;
+                if (newY + nameHeight > viewportHeight) newY = viewportHeight - nameHeight;
+
+                movableName.style.left = `${newX}px`;
+                movableName.style.top = `${newY}px`;
+                movableName.style.position = 'fixed'; // Keep the position fixed while dragging
+            }
+        }
+
+        // Touch support for mobile devices
+        movableName.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            const touch = e.touches[0];
+            offsetX = touch.clientX - movableName.getBoundingClientRect().left;
+            offsetY = touch.clientY - movableName.getBoundingClientRect().top;
+
+            // Prevent scrolling of the friends list while dragging
+            friendsList.style.overflow = 'hidden';
+
+            document.addEventListener('touchmove', moveNameTouch);
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+            friendsList.style.overflow = 'auto'; // Allow scrolling again
+            document.removeEventListener('touchmove', moveNameTouch);
+        });
+
+        function moveNameTouch(e) {
+            if (isDragging) {
+                const touch = e.touches[0];
+                let newX = touch.clientX - offsetX;
+                let newY = touch.clientY - offsetY;
+
+                // Constrain the position within the viewport
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const nameWidth = movableName.offsetWidth;
+                const nameHeight = movableName.offsetHeight;
+
+                // Ensure the name div stays within the viewport
+                if (newX < 0) newX = 0;
+                if (newX + nameWidth > viewportWidth) newX = viewportWidth - nameWidth;
+                if (newY < 0) newY = 0;
+                if (newY + nameHeight > viewportHeight) newY = viewportHeight - nameHeight;
+
+                movableName.style.left = `${newX}px`;
+                movableName.style.top = `${newY}px`;
+                movableName.style.position = 'fixed'; // Keep the position fixed while dragging
+            }
+        }
+    </script>
+</body>
+
+</html>
+"""
+
 html = """
 <!DOCTYPE
   <html lang="en">
