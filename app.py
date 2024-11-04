@@ -565,7 +565,7 @@ html1="""
         <div class="friends">
             {% for d in data %}
             <div class="friend" onclick="go_Tochat('{{ d }}')">
-                <img src="default.webp" class="frprofile" onclick="event.stopPropagation();">
+                <img src="default.png" class="frprofile" onclick="event.stopPropagation();">
                 <div class="frinfo">
                     <div class="frname">
                         {{d}}
