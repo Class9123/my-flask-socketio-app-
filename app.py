@@ -461,10 +461,10 @@ html = """
     {% for j in chats %}
     <div class='message'>
       <div class="message-content {{j[0]}}">
+        {{j[1]}}
         <div class="date">
           {{j[2][0]}} <br>{{j[2][1]}}
         </div>
-        {{j[1]}}
       </div>
     </div>
     
@@ -505,10 +505,10 @@ html = """
       messageDiv.classList.add("message");
       messageDiv.innerHTML = `
       <div class="message-content friend">
+      ${message.message}
       <div class="date">
       ${message.date} <br>${message.time}
       </div>
-      ${message.message}
       </div>
       `;
       chat.appendChild(messageDiv);
@@ -547,10 +547,10 @@ html = """
       messageDiv.classList.add("message");
       messageDiv.innerHTML = `
       <div class="message-content you">
+      ${date_time.message}
       <div class="date">
       ${date_time.date} <br>${date_time.time}
       </div>
-      ${date_time.message}
       </div>
       `;
       chat.appendChild(messageDiv);
