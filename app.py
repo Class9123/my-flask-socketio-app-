@@ -457,8 +457,7 @@ html="""
 <body>
   <div class="header">
     <img class="friend-profile" src="">
-    <label class="friend-name">Dev &times;</label>
-    {{ f_number }}
+    <label class="friend-name">{{ f_number }}</label>
   </div>
   <div id="chat" class="chat">
     {% for j in chats %}
