@@ -579,6 +579,314 @@ html="""
 
 </html>
 """
+html = """
+<!DOCTYPE
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Class 10 Facebook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="sKP4alsXsHG6lsdaSyAEvSi1PgLGpTITHkd6UvzOyJU" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+  <style>
+:root {
+    --body-color: #f0f4f9;
+    --header-bg: linear-gradient(45deg, white, gray);
+    --you-bg: #C6E7FF;
+    /* Light green background for user's messages */
+    --friend-bg: #FFF6E9;
+    /* White background for friend's messages */
+  }
+
+    body {
+      background-color: var(--body-color);
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .header {
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      background-image: var(--header-bg);
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .friend-profile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .friend-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 60px;
+      /* Footer height + some padding */
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .you {
+
+      align-self: flex-end;
+    }
+
+    .friend {
+      align-self: flex-start;
+    }
+
+    .message-content {
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      padding: 10px;
+      max-width: 70%;
+      word-wrap: break-word;
+      margin-bottom: 3px;
+      margin: 0,2px,0,2px;
+      background-color: var(--friend-bg);
+    }
+
+    .message-content.you {
+      color: white;
+      color: #a07855ff;
+      background-color: var(--you-bg);
+    }
+    .message-content.friend {
+      color: #a07855ff;
+      background-color: var(--friend-bg);
+      align-items: flex-end;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-box {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .send {
+      background-color: #ce4a7eff;
+      border: none;
+      border-radius: 10%;
+      padding: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .send i {
+      font-size: 18px;
+      color: gray;
+      margin-right: 10px;
+    }
+
+    .send:hover {
+      animation: an1 0.3s;
+    }
+
+    @keyframes an1 {
+      0% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    .scroll-button {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      /* Adjusted for better positioning */
+      right: 20px;
+      background-color: #f7ced7ff;
+      border: none;
+      border-radius: 50%;
+      padding: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      z-index: 1;
+
+    }
+
+    .scroll-button i {
+      font-size: 18px;
+      color: #6e4c1eff;
+
+    }
+    .date {
+      font-size: 10px;
+      color: gray;
+    }
+    .date span {
+      font-size: 15px;
+      margin: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img class="friend-profile" src="">
+    <label class="friend-name">{{ f_number }}</label>
+  </div>
+  <div id="chat" class="chat">
+    {% for j in chats %}
+    <div class='message'>
+      <div class="message-content {{j[0]}}">
+        <div class="date">
+          D:{{j[2][0]}} <br> &#9201; {{j[2][1]}}
+        </div>
+        {{j[1]}}
+      </div>
+    </div>
+    
+    {% endfor %}
+  </div>
+  <footer>
+    <input class="input-box" placeholder="Message" id="message_input" type="text">
+    <button class="send" id="sendbtn">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </footer>
+  <button id="scrollButton" class="scroll-button" onclick="scrollToBottom()">
+    <i class="fas fa-arrow-down"></i>
+  </button>
+  <script>
+    var f = "{{ f_number }}";
+    var u = "{{ u_number }}";
+    var socket = io();
+    var chat = document.getElementById('chat');
+    var scrollButton = document.getElementById('scrollButton');
+    var messageInput = document.getElementById('message_input');
+
+    function sendMessage() {
+      var message = messageInput.value.trim();
+      if (message === "") {
+        return;
+      }
+      var data = {
+        message: message,
+        f_number: f,
+        u_number: u
+      };
+      socket.emit('send_message', data);
+    }
+
+    function addMessage(message) {
+      var messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+      messageDiv.innerHTML = `
+      <div class="message-content friend">
+      <div class="date">
+      ${message.date} <br> ${message.time}
+      </div>
+      ${message.message}
+      </div>
+      `;
+      chat.appendChild(messageDiv);
+      showScrollButtonIfNeeded();
+    }
+
+    function scrollToBottom() {
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function showScrollButtonIfNeeded() {
+      if (chat.scrollTop + chat.clientHeight < chat.scrollHeight - 1) {
+        scrollButton.style.display = 'block';
+      } else {
+        scrollButton.style.display = 'none';
+      }
+    }
+
+    messageInput.addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    document.getElementById("sendbtn").addEventListener("click", sendMessage);
+
+    document.getElementById("scrollButton").addEventListener("click", scrollToBottom);
+
+    socket.emit('join_room', {
+      u_number: u,
+      f_number: f
+    });
+
+    socket.on("date_time", function(date_time) {
+      var messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+      messageDiv.innerHTML = `
+      <div class="message-content you">
+      <div class="date">
+      D:${date_time.date} <br> &#9201; ${date_time.time}
+      </div>
+      ${date_time.message}
+      </div>
+      `;
+      chat.appendChild(messageDiv);
+      messageInput.value = '';
+      scrollToBottom();
+    });
+
+    socket.on('receive_message', function(message) {
+      addMessage(message);
+    });
+
+    chat.addEventListener('scroll', function() {
+      showScrollButtonIfNeeded();
+    });
+
+    messageInput.addEventListener('focus', function() {
+      if (scrollButton.style.display !== 'none') {
+        scrollButton.click();
+      }
+    });
+
+    scrollToBottom();
+  </script>
+</body>
+
+</html>
+"""
 from flask import Flask, render_template_string, request, session, redirect 
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
