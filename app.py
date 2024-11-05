@@ -565,7 +565,7 @@ html1="""
         <div class="friends">
             {% for d in data %}
             <div class="friend" onclick="go_Tochat('{{ d }}')">
-               <img class="frprofile" src="https://picsum.photos/200/300" />
+               <img class="frprofile" src="default.png" />
                 <div class="frinfo">
                     <div class="frname">
                         {{d}}
