@@ -549,7 +549,9 @@ html1="""
             /* Center the text */
             z-index: 20;
         }
-	
+	.link{
+       color:blue;
+       }
     </style>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
@@ -565,28 +567,28 @@ html1="""
     <main id="friendsList">
         <div class="friends">
             {% for d in data %}
-            <div class="friend" onclick="go_Tochat('{{ d[0] }}')">
-               <img class="frprofile" src="https://drive.google.com/uc?export=view&id=12NR8OO1L9vFY7ucwi2ZP4Z67MmWZrUm_" >
-                <div class="frinfo">
-                    <div class="frname">
-                        {{d[0]}}
-                        <div class="time">
-                            {{ d[2] }}
-                        </div>
-                    </div>
-		    {% if d[1].startswith('http://') or d[1].startswith('https://') %}
-                 <div class="lastmsg">
-                      <a href="{{d[1]}}" target="_blank"> {{ d[1] }} </a>
-                    </div>
-             {% else %}
-             <div class="lastmsg">
-                       {{ d[1] }}
-                    </div>
-             {% endif %}
-                    
+     <div class="friend" onclick="go_Tochat('{{ d[0] }}')">
+        <img class="frprofile" src="https://drive.google.com/uc?export=view&id=12NR8OO1L9vFY7ucwi2ZP4Z67MmWZrUm_" >
+        <div class="frinfo">
+            <div class="frname">
+                {{ d[0] }}
+                <div class="time">
+                    {{ d[2] }}
                 </div>
             </div>
-            {% endfor %}
+            {% if d[1].startswith('http://') or d[1].startswith('https://') %}
+                <div class="lastmsg link">
+                    <a href="{{ d[1] }}" target="_blank"> {{ d[1] }} </a>
+                </div>
+            {% else %}
+                <div class="lastmsg">
+                    {{ d[1] }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+ {% endfor %}
+
         </div>
 
 
