@@ -549,6 +549,7 @@ html1="""
             /* Center the text */
             z-index: 20;
         }
+	
     </style>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
@@ -573,9 +574,16 @@ html1="""
                             {{ d[2] }}
                         </div>
                     </div>
-                    <div class="lastmsg">
+		    {% if d[1].startswith('http://') or d[1].startswith('https://') %}
+                 <div class="lastmsg">
+                      <a href="{{d[1]}}" target="_blank"> {{ d[1] }} </a>
+                    </div>
+             {% else %}
+             <div class="lastmsg">
                        {{ d[1] }}
                     </div>
+             {% endif %}
+                    
                 </div>
             </div>
             {% endfor %}
@@ -1104,7 +1112,7 @@ def index():
     data = list(database[number]['friends'].keys())
     data = []
     for key in database[number]["friends"].keys():
-        data.append( [ key , database[number]["friends"][key][-1][1] ,database[number]["friends"][key][-1][2] ] )
+        data.append( [ key , database[number]["friends"][key][-1][1] ,database[number]["friends"][key][-1][2][0] ] )
     return render_template_string(html1, data=data, u_number=number)
 
 @app.route("/chat/<f_number>")
