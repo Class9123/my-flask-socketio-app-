@@ -564,17 +564,17 @@ html1="""
     <main id="friendsList">
         <div class="friends">
             {% for d in data %}
-            <div class="friend" onclick="go_Tochat('{{ d }}')">
+            <div class="friend" onclick="go_Tochat('{{ d[0] }}')">
                <img class="frprofile" src="https://drive.google.com/uc?export=view&id=12NR8OO1L9vFY7ucwi2ZP4Z67MmWZrUm_" >
                 <div class="frinfo">
                     <div class="frname">
-                        {{d}}
+                        {{d[0]}}
                         <div class="time">
                             Date
                         </div>
                     </div>
                     <div class="lastmsg">
-                        hi
+                       {{ d[1] }}
                     </div>
                 </div>
             </div>
@@ -1102,6 +1102,9 @@ def index():
         session['number'] = number
         database[number] = { "number": number, "friends": {} }
     data = list(database[number]['friends'].keys())
+    data = []
+    for key in database[number]["friends"].keys():
+        data.append( [ key , database[number]["friends"][key][-1][1] ] )
     return render_template_string(html1, data=data, u_number=number)
 
 @app.route("/chat/<f_number>")
