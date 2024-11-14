@@ -570,7 +570,7 @@ html1="""
                     <div class="frname">
                         {{d[0]}}
                         <div class="time">
-                            Date
+                            {{ d[2] }}
                         </div>
                     </div>
                     <div class="lastmsg">
@@ -1104,7 +1104,7 @@ def index():
     data = list(database[number]['friends'].keys())
     data = []
     for key in database[number]["friends"].keys():
-        data.append( [ key , database[number]["friends"][key][-1][1] ] )
+        data.append( [ key , database[number]["friends"][key][-1][1] ,database[number]["friends"][key][-1][2] ] )
     return render_template_string(html1, data=data, u_number=number)
 
 @app.route("/chat/<f_number>")
