@@ -848,8 +848,8 @@ def generate_number():
 
 def get_date():
     nepali_dt = nepali_datetime.datetime.now()
-    date = nepali_dt.date()  
-    time = nepali_dt.strftime('%I:%M %p')  
+    date = str(nepali_dt.date())
+    time = str(nepali_dt.strftime('%I:%M %p'))
     return (date, time)
 	
 @app.route('/')
