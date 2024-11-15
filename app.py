@@ -305,7 +305,11 @@ html1="""
                 </div>
             </div>  
             <div class="lastmsg">
+	       {% if len(d[1]) >= 20 %}
+                 {{ d[1][:20]+"....." }}
+	       {% else  %}
                  {{ d[1] }}
+	       {% endif %}
              </div> 
         </div>
     </div>
