@@ -823,7 +823,7 @@ from flask import Flask, render_template_string, request, session, redirect
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
 import random 
-from datetime import datetime
+import nepali_datetime
 
 app = Flask(__name__)
 app.secret_key = "hbcguf FF for diff FjdjsjsjsjF ft f"
@@ -847,9 +847,9 @@ def generate_number():
             return "98" + str(number)
 
 def get_date():
-    now = datetime.now()
-    date = now.strftime("%Y-%m-%d ")
-    time = now.strftime("%I:%M %p")
+    nepali_dt = nepali_datetime.datetime.now()
+    date = nepali_dt.date()  
+    time = nepali_dt.strftime('%I:%M %p')  
     return (date, time)
 	
 @app.route('/')
