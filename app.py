@@ -701,6 +701,15 @@ html = """
     var scrollButton = document.getElementById('scrollButton');
     var messageInput = document.getElementById('message_input');
 
+   function isValidURL(string) {
+    try {
+      new URL(string);
+     return true;
+      } catch (_) {
+      return false;
+     }
+    }
+    
     function sendMessage() {
       var message = messageInput.value.trim();
       if (message === "") {
@@ -716,10 +725,17 @@ html = """
 
     function addMessage(message) {
       var messageDiv = document.createElement("div");
+      let mes;
+      if ( isValidURL(message.message)){
+        mes = `<a href="${message.message}" target ="_blank"> ${message.message} </a>   `
+      } else {
+        mes = `${message.message}`
+      }
+      
       messageDiv.classList.add("message");
       messageDiv.innerHTML = `
       <div class="message-content friend">
-      ${message.message}
+      ${mes}
       <div class="date">
       ${message.date} <br>${message.time}
       </div>
@@ -758,10 +774,17 @@ html = """
 
     socket.on("date_time", function(date_time) {
       var messageDiv = document.createElement("div");
+      let message= date_time.message;
+      let tag ;
+      if (isValidURL(message)){
+          tag = `<a href="${message} target="_blank"> ${message}</a>`
+      }else{
+          tag = `${message}`
+      }
       messageDiv.classList.add("message");
       messageDiv.innerHTML = `
       <div class="message-content you">
-      ${date_time.message}
+      ${tag}
       <div class="date">
       ${date_time.date} <br>${date_time.time}
       </div>
