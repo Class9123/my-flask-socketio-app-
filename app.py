@@ -543,10 +543,10 @@ html = """
       display: flex;
       flex-direction: column;
       margin-bottom: 20px;
+      overflow-wrap: break-word;
     }
 
     .you {
-
       align-self: flex-end;
     }
 
@@ -561,7 +561,7 @@ html = """
       border-radius: 15px;
       padding: 10px;
       max-width: 70%;
-      word-wrap: break-word;
+      word-break: break-word;
       margin-bottom: 3px;
       margin: 0,2px,0,2px;
       background-color: var(--friend-bg);
