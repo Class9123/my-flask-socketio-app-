@@ -715,6 +715,7 @@ html = """
     }
     
     function sendMessage() {
+      event.preventDefault();
       var message = messageInput.value.trim();
       if (message === "") {
         return;
