@@ -480,7 +480,9 @@ html1="""
 """
 
 html = """
-<!DOCTYPE
+
+
+<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -663,6 +665,35 @@ html = """
       font-size: 15px;
       margin: 2px;
     }
+    
+    @keyframes pulse {
+    0% {
+      
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+  }
+
+  .sending {
+    background-color: #C6EFFF;
+    color: white;
+    font-style: italic;
+    animation: pulse 1s infinite;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 70%;
+    align-self: flex-end;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    word-break: break-word;
+    margin-bottom: 20px;
+  }
   </style>
 </head>
 <body>
@@ -714,19 +745,67 @@ html = """
      }
     }
     
-    function sendMessage() {
-      messageInput.focus() ; 
-      var message = messageInput.value.trim();
-      if (message === "") {
-        return;
-      }
-      var data = {
-        message: message,
-        f_number: f,
-        u_number: u
-      };
-      socket.emit('send_message', data);
+   function sendMessage() {
+    messageInput.focus();
+    var message = messageInput.value.trim();
+    messageInput.value = ""
+    if (message === "") {
+      return;
     }
+
+    // Generate a unique ID for the message
+    var messageId = `message_${Date.now()}`;
+
+    // Add "sending" message div
+    var sendingDiv = document.createElement("div");
+    sendingDiv.id = messageId; // Assign the unique ID
+    sendingDiv.classList.add("message", "you");
+    sendingDiv.innerHTML = `
+      <div class="message-content sending">
+        Sending...
+      </div>
+    `;
+    chat.appendChild(sendingDiv);
+    scrollToBottom();
+
+    // Prepare the data to send
+    var data = {
+      message: message,
+      f_number: f,
+      u_number: u,
+      id: messageId // Send the unique ID to the server
+    };
+    socket.emit("send_message", data);
+  }
+  
+    socket.on("date_time", (data) => {
+  // Find the message div by its unique ID
+  var messageDiv = document.getElementById(data.id);
+
+  if (messageDiv) {
+    // Update the message content
+    const messageContent = messageDiv.querySelector(".message-content");
+
+    // Set the appropriate class for the message type
+    messageContent.classList.remove("sending");
+    messageContent.classList.add(data.className); // Use the class sent from the server
+
+    // Check if the message is a link or plain text
+    if (data.message.startsWith("http://") || data.message.startsWith("https://")) {
+      messageContent.innerHTML = `<a href="${data.message}" target="_blank">${data.message}</a>`;
+    } else {
+      messageContent.textContent = data.message;
+    }
+
+    // Add date and time
+    const dateDiv = document.createElement("div");
+    dateDiv.classList.add("date");
+    dateDiv.innerHTML = `${data.date}<br>${data.time}`;
+    messageContent.appendChild(dateDiv);
+
+    scrollToBottom();
+  }
+});
 
     function addMessage(message) {
       var messageDiv = document.createElement("div");
@@ -777,33 +856,9 @@ html = """
       f_number: f
     });
 
-    socket.on("date_time", function(date_time) {
-      var messageDiv = document.createElement("div");
-      let message= date_time.message;
-      let tag ;
-      if (isValidURL(message)){
-          tag = `<a href="${message} target="_blank"> ${message}</a>`
-      }else{
-          tag = `${message}`
-      }
-      messageDiv.classList.add("message");
-      messageDiv.innerHTML = `
-      <div class="message-content you">
-      ${tag}
-      <div class="date">
-      ${date_time.date} <br>${date_time.time}
-      </div>
-      </div>
-      `;
-      chat.appendChild(messageDiv);
-      messageInput.value = '';
-      scrollToBottom();
-    });
-
     socket.on('receive_message', function(message) {
       addMessage(message);
     });
-
     chat.addEventListener('scroll', function() {
       showScrollButtonIfNeeded();
     });
@@ -819,6 +874,7 @@ html = """
 </body>
 
 </html>
+
 """
 from flask import Flask, render_template_string, request, session, redirect 
 from flask_socketio import SocketIO, emit, join_room
@@ -900,13 +956,14 @@ def handle_message(data):
     u = data["u_number"]
     f = data["f_number"]
     message = data["message"]
+    id = data["id"]
     #("m",message)
     dt = get_date()
     database[u]['friends'][f].append(("you", message, dt))
     database[f]["friends"][u].append(("friend", message, dt))
-    date = {  "message": message , "date": dt[0], "time": dt[1] }
+    data = {  "message": message , "date": dt[0], "time": dt[1] , "id" : id}
     #("\nreached\n")
-    emit("date_time", date, sid=request.sid)
+    emit("date_time", data, sid=request.sid)
     message = { "message": message, "date": dt[0], "time": dt[1] }
     room_name = get_room_name(u, f)
     emit("receive_message", message, skip_sid=request.sid, room=room_name)
