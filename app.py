@@ -759,7 +759,7 @@ html = """
     // Add "sending" message div
     var sendingDiv = document.createElement("div");
     sendingDiv.id = messageId; // Assign the unique ID
-    sendingDiv.classList.add("message", "you");
+    sendingDiv.classList.add("message");
     sendingDiv.innerHTML = `
       <div class="message-content sending">
         Sending...
@@ -781,14 +781,15 @@ html = """
     socket.on("date_time", (data) => {
   // Find the message div by its unique ID
   var messageDiv = document.getElementById(data.id);
-
   if (messageDiv) {
+     
+     messageDiv.classList.add("message");
     // Update the message content
     const messageContent = messageDiv.querySelector(".message-content");
 
     // Set the appropriate class for the message type
     messageContent.classList.remove("sending");
-    messageContent.classList.add(data.className); // Use the class sent from the server
+    messageContent.classList.add("you"); // Use the class sent from the server
 
     // Check if the message is a link or plain text
     if (data.message.startsWith("http://") || data.message.startsWith("https://")) {
